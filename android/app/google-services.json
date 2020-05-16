@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "590068638345",
+    "firebase_url": "https://cuidapet-pre.firebaseio.com",
+    "project_id": "cuidapet-pre",
+    "storage_bucket": "cuidapet-pre.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590068638345:android:39f9dcec6bc7bcfe9a9c58",
+        "android_client_info": {
+          "package_name": "br.com.programacaonapratica.cuidapet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590068638345-v3a5ndva14echvk9gan6o42g1q98socf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjRNIHahodzg4OV8DkWof1CQqRFVBFxZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590068638345-v3a5ndva14echvk9gan6o42g1q98socf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
