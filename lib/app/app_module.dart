@@ -1,6 +1,7 @@
 import 'package:cuidapet/app/core/database/connection_adm.dart';
 import 'package:cuidapet/app/modules/address/address_module.dart';
 import 'package:cuidapet/app/modules/agendamento/agendamento_module.dart';
+import 'package:cuidapet/app/modules/chat_list/chat_list_module.dart';
 import 'package:cuidapet/app/modules/estabelecimento/estabelecimento_module.dart';
 import 'package:cuidapet/app/modules/home/home_module.dart';
 import 'package:cuidapet/app/modules/meus_agendamentos/meus_agendamentos_module.dart';
@@ -38,6 +39,7 @@ class AppModule extends MainModule {
         Router('/estabelecimento', module: EstabelecimentoModule()),
         Router('/agendamento', module: AgendamentoModule()),
         Router('/meus_agendamentos', module: MeusAgendamentosModule()),
+        Router('/chat_list', module: ChatListModule()),
       ];
 
   @override

@@ -35,4 +35,9 @@ class AdressesRepository {
     final places = GoogleMapsPlaces(apiKey: DotEnv().env['googleApiKey']);
     return await places.getDetailsByPlaceId(placeId);
   }
+
+  Future<void> clearDatabase() async {
+     final conn = await Connection().instance;
+     await conn.rawDelete('delete from address');
+  }
 }

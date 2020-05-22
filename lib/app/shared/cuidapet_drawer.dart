@@ -1,3 +1,4 @@
+import 'package:cuidapet/app/repositories/addresses_repository.dart';
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
 import 'package:cuidapet/app/shared/loader_component.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class CuidapetDrawer extends Drawer {
                         title: Text('Meus agendamentos'),
                       ),
                        ListTile(
-                        onTap: () => Modular.to.pushNamed('/meus_agendamentos'),
+                        onTap: () => Modular.to.pushNamed('/chat_list'),
                         leading: Icon(Icons.chat),
                         title: Text('Chats'),
                       ),
@@ -62,6 +63,7 @@ class CuidapetDrawer extends Drawer {
                           var prefs = await SharedPrefsRepository.instance;
                           prefs.logout();
                           Loader.hide();
+                          await Modular.get<AdressesRepository>().clearDatabase();
                           await Modular.to.pushNamedAndRemoveUntil('/', (_) => false);
                         },
                         leading: Icon(Icons.exit_to_app),

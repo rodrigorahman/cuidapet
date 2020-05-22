@@ -23,7 +23,7 @@ class _MeusAgendamentosPageState extends ModularState<MeusAgendamentosPage, Meus
   };
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     controller.buscarHistoricoAgendamentos();
   }
@@ -32,7 +32,7 @@ class _MeusAgendamentosPageState extends ModularState<MeusAgendamentosPage, Meus
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Histórico de Agendamentos'),
+        title: Text('Histórico de Agendamentos', style: TextStyle(fontSize: 15),),
       ),
       body: FutureBuilder<List<AgendamentoModel>>(
         future: controller.agendamentosFuture,
@@ -48,6 +48,11 @@ class _MeusAgendamentosPageState extends ModularState<MeusAgendamentosPage, Meus
               );
               break;
             case ConnectionState.done:
+              if (snapshot.data.isEmpty) {
+                return Center(
+                  child: Text('Nenhum agendamento realizado'),
+                );
+              }
               return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (_, index) {

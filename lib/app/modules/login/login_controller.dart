@@ -7,6 +7,7 @@ import 'package:cuidapet/app/shared/loader_component.dart';
 import 'package:cuidapet/app/utils/store_utils.dart';
 import 'package:cuidapet/app/utils/theme_utils.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
@@ -44,12 +45,16 @@ abstract class _LoginControllerBase with Store {
   @action
   Future<void> login() async {
     errorMessage = null;
+    var fireAuth = FirebaseAuth.instance;
     if (formKey.currentState.validate()) {
       _loginFuture = ObservableFuture(_repository.login(loginEditController.text, password: passwordEditController.text));
       try {
+        
         accessModel = await _loginFuture;
         var sharedPrefsRepository = (await SharedPrefsRepository.instance);
         await sharedPrefsRepository.registerAccessToken(accessModel.accessToken);
+        await fireAuth.signInWithEmailAndPassword(email: loginEditController.text, password: passwordEditController.text);
+
       } on DioError catch (e) {
         errorMessage = e.response.data['message'];
       }
@@ -72,6 +77,7 @@ abstract class _LoginControllerBase with Store {
     
     final usuario = await _repository.recuperarDadosUsuario();
     await sharedPrefsRepository.registerUserData(usuario);
+    
   }
 
   @action

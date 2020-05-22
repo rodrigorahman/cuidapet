@@ -45,10 +45,7 @@ abstract class _HomeControllerBase with Store {
 
   @action
   Future<void> initPage() async {
-    var hasAddressResult = await hasAddress();
-    if (!hasAddressResult) {
-      await Modular.to.pushNamed('/address');
-    }
+    await hasAddress();
     findCategories();
     _sharedPrefsRepository = await SharedPrefsRepository.instance;
     final addressStr = _sharedPrefsRepository.addressSelected;
@@ -57,11 +54,15 @@ abstract class _HomeControllerBase with Store {
       await findFornecedores();
     } else {
       await Modular.to.pushNamed('/address');
+      await initPage();
     }
   }
 
-  Future<bool> hasAddress() async {
-    return await _addressesRepository.hasAddress();
+  Future<void> hasAddress() async {
+    var hasAddressResult = await _addressesRepository.hasAddress();
+    if (!hasAddressResult) {
+      await Modular.to.pushNamed('/address');
+    }
   }
 
   @observable

@@ -51,6 +51,14 @@ class UsuarioRepository {
     return CustomDio.authInstance.get('/usuario').then((res) => UsuarioModel.fromJson(res.data));
   }
 
-  
+  Future<void> createUsuario(String user, String password) {
+    return CustomDio.instance.post(
+      '/login/cadastrar',
+      data: {
+        'email': user,
+        'senha': password,
+      },
+    );
+  }
 
 }
