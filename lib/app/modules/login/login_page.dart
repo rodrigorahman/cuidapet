@@ -24,17 +24,19 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends ModularState<LoginPage, LoginController> {
   //use 'controller' variable to access controller
-  
+
   @override
   void initState() {
     Modular.get<LoginReactions>().start();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
       if (Platform.isAndroid) {
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          systemNavigationBarColor: ScreenUtil.screenHeightDp > 700 ? ThemeUtils.primaryColor : null,
-          statusBarColor: Colors.white, // status bar color
-        ));
+        SystemChrome.setSystemUIOverlayStyle(
+          SystemUiOverlayStyle(
+            systemNavigationBarColor: ScreenUtil.screenHeightDp > 700 ? ThemeUtils.primaryColor : null,
+            statusBarColor: Colors.white,
+          ),
+        );
       }
     });
     super.initState();
@@ -58,7 +60,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 40),
+                margin: EdgeInsets.only(top: ScreenUtil.statusBarHeight + 30),
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -121,7 +123,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
             Container(
               padding: EdgeInsets.all(10),
               width: ScreenUtil.screenWidthDp,
-              height: 70,
+              height: 60,
               child: RaisedButton(
                 color: ThemeUtils.primaryColor,
                 onPressed: () => controller.login(),
@@ -158,7 +160,9 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                 ],
               ),
             ),
-            FacebookButton(onTap: () => controller.facebookLogin(),)
+            FacebookButton(
+              onTap: () => controller.facebookLogin(),
+            )
           ],
         ),
       ),

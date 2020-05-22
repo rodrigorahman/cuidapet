@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:cuidapet/app/core/dio/custom_dio.dart';
 import 'package:cuidapet/app/models/access_service_model.dart';
+import 'package:cuidapet/app/models/usuario_model.dart';
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
 
-class LoginRepository {
+class UsuarioRepository {
   Future<AccessServiceModel> login(String user, {String password, bool facebookLogin = false, String avatar = ''}) {
     return CustomDio.instance.post(
       '/login',
@@ -45,4 +46,11 @@ class LoginRepository {
       'password': password,
     });
   }
+
+  Future<UsuarioModel> recuperarDadosUsuario() async {
+    return CustomDio.authInstance.get('/usuario').then((res) => UsuarioModel.fromJson(res.data));
+  }
+
+  
+
 }

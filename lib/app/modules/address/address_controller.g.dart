@@ -33,6 +33,23 @@ mixin _$AddressController on _AddressControllerBase, Store {
     return _$findAllAdressesAsyncAction.run(() => super.findAllAdresses());
   }
 
+  final _$findAddressGoogleAsyncAction =
+      AsyncAction('_AddressControllerBase.findAddressGoogle');
+
+  @override
+  Future<List<Prediction>> findAddressGoogle(String query) {
+    return _$findAddressGoogleAsyncAction
+        .run(() => super.findAddressGoogle(query));
+  }
+
+  final _$goToConfirmAsyncAction =
+      AsyncAction('_AddressControllerBase.goToConfirm');
+
+  @override
+  Future<String> goToConfirm(Prediction pred) {
+    return _$goToConfirmAsyncAction.run(() => super.goToConfirm(pred));
+  }
+
   @override
   String toString() {
     return '''

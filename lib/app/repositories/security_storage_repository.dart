@@ -9,7 +9,7 @@ class SecurityStorageRepository {
     await storage.write(key: REFRESH_TOKEN, value: token);
   }
 
-  Future<String> getRefreshToken(String token) async {
+  Future<String> get refreshToken async {
     final storage = FlutterSecureStorage();
     return await storage.read(key: REFRESH_TOKEN);
   }

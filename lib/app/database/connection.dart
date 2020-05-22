@@ -15,9 +15,7 @@ class Connection {
   Connection._();
 
   factory Connection() {
-    if (_instance == null) {
-      _instance = Connection._();
-    }
+    _instance ??= Connection._();
     return _instance;
   }
 
@@ -49,18 +47,18 @@ class Connection {
     _db = null;
   }
 
-  _onConfigure(Database db) async {
+  void _onConfigure(Database db) async {
     await db.execute('PRAGMA foreign_keys = ON');
   }
 
-  _onCreate(Database db, int version) {
+  void _onCreate(Database db, int version) {
     var batch = db.batch();
     createV1(batch);
     createV2(batch);
     batch.commit();
   }
 
-  _onUpgrade(Database db, int oldVersion, int newVersion) {
+  void _onUpgrade(Database db, int oldVersion, int newVersion) {
     var batch = db.batch();
     print(oldVersion);
     if(oldVersion < 2) {

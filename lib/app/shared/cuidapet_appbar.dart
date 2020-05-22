@@ -1,9 +1,9 @@
-import 'package:cuidapet/app/modules/address/address_page.dart';
 import 'package:cuidapet/app/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class CuidapetAppbar extends PreferredSize {
-  CuidapetAppbar(BuildContext context, {double width})
+  CuidapetAppbar(BuildContext context, {double width, VoidCallback callback, ValueChanged onTextChange})
       : super(
             child: AppBar(
               title: Padding(
@@ -14,8 +14,13 @@ class CuidapetAppbar extends PreferredSize {
               elevation: 0,
               actions: <Widget>[
                 InkWell(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(fullscreenDialog: true, builder: (_) => AddressPage())),
-                                  child: Padding(
+                  onTap: () async {
+                    await Modular.to.pushNamed('/address');
+                    if(callback != null) {
+                      callback();
+                    }
+                  },
+                  child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(Icons.location_on),
                   ),
@@ -39,7 +44,8 @@ class CuidapetAppbar extends PreferredSize {
                       child: Material(
                         elevation: 4,
                         borderRadius: BorderRadius.circular(30),
-                                              child: TextFormField(
+                        child: TextFormField(
+                          onChanged: onTextChange,
                           decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,

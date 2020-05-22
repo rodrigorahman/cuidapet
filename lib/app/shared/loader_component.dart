@@ -1,7 +1,6 @@
 import 'package:cuidapet/app/utils/store_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobx/mobx.dart';
 
 class Loader {
   static void show() {

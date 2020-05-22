@@ -1,8 +1,6 @@
-import 'package:cuidapet/app/models/access_service_model.dart';
 import 'package:cuidapet/app/modules/login/change_password_modal/change_password_modal_widget.dart';
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
 import 'package:cuidapet/app/shared/loader_component.dart';
-import 'package:cuidapet/app/utils/store_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:get/get.dart';
@@ -32,10 +30,9 @@ class LoginReactions with Disposable {
           if (_controller.accessModel.created) {
             // Direcionar para inserir uma senha
             await Get.bottomSheet(ChangePasswordModalWidget(), isDismissible: false);
-            Get.offAllNamed('/home');
-          } else {
-            Get.offAllNamed('/home');
-          }
+          } 
+          
+          await Modular.to.pushNamedAndRemoveUntil('/home', ModalRoute.withName('/')) ;
         }, onError: () async {
           showToast(_controller.errorMessage, backgroundColor: Colors.red);
           final prefs = await SharedPrefsRepository.instance;

@@ -31,8 +31,8 @@ class AddressModel {
     return AddressModel(
       id: map['id'] as int,
       address: map['address'],
-      latitude: double.parse(map['latitude']),
-      longitude: double.parse(map['longitude']),
+      latitude: map['latitude'].runtimeType == String ? double.parse(map['latitude']) : map['latitude'] as double,
+      longitude: map['latitude'].runtimeType == String ? double.parse(map['longitude']) : map['longitude'] as double,
       complemento: map['complemento'],
     );
   }

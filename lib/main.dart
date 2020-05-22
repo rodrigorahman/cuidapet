@@ -9,14 +9,14 @@ import 'app/core/push_notification/firebase_message_configure.dart';
 Future<void> main() async {
   
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await loadEnv();
-  FirebaseMessageConfigure().configure();
+  await FirebaseMessageConfigure().configure();
 
   runApp(ModularApp(module: AppModule()));
 }
 
 Future loadEnv() async {
-  const bool inProduction = const bool.fromEnvironment('dart.vm.product');
+  const inProduction = bool.fromEnvironment('dart.vm.product');
   await DotEnv().load(inProduction ? '.env' : '.env_dev');
 }

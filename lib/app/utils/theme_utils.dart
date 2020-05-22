@@ -13,5 +13,6 @@ class ThemeUtils {
     primaryColor = theme.primaryColor;
     primaryColorDark = theme.primaryColorDark;
     primaryColorLight = theme.primaryColorLight;
+    accentColor = theme.accentColor;
   }
 }

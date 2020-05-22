@@ -13,7 +13,7 @@ class AdressesRepository {
   Future<bool> hasAddress() async {
     final conn = await Connection().instance;
     final result = await conn.rawQuery('select * from address');
-    return result.length > 0;
+    return result.isNotEmpty;
   }
 
   Future<void> saveAddress(AddressModel model) async {
@@ -22,8 +22,8 @@ class AdressesRepository {
   }
 
   Future<List<Prediction>> findAddressByGooglePlaces(String address) async {
-    final places = new GoogleMapsPlaces(apiKey: DotEnv().env['googleApiKey']);
-    PlacesAutocompleteResponse response = await places.autocomplete(
+    final places = GoogleMapsPlaces(apiKey: DotEnv().env['googleApiKey']);
+    var response = await places.autocomplete(
       address,
       language: 'pt',
     );
@@ -32,7 +32,7 @@ class AdressesRepository {
   }
 
   Future<PlacesDetailsResponse> findGooglePlacesDetail(String placeId) async {
-    final places = new GoogleMapsPlaces(apiKey: DotEnv().env['googleApiKey']);
+    final places = GoogleMapsPlaces(apiKey: DotEnv().env['googleApiKey']);
     return await places.getDetailsByPlaceId(placeId);
   }
 }

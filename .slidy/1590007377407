@@ -1,0 +1,5 @@
+lib/app/modules/agendamento/agendamento_module.dart
+lib/app/modules/agendamento/agendamento_page.dart
+test/app/modules/agendamento/agendamento_page_test.dart
+lib/app/modules/agendamento/agendamento_controller.dart
+test/app/modules/agendamento/agendamento_controller_test.dart

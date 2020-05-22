@@ -14,7 +14,7 @@ class AddressConfirmController = _AddressConfirmControllerBase with _$AddressCon
 abstract class _AddressConfirmControllerBase with Store {
   TextEditingController addressTextController = TextEditingController();
   TextEditingController complementTextController = TextEditingController();
-  AdressesRepository _repository = Modular.get<AdressesRepository>();
+  final AdressesRepository _repository = Modular.get<AdressesRepository>();
 
   @observable
   bool editAddress;
@@ -24,8 +24,8 @@ abstract class _AddressConfirmControllerBase with Store {
 
   @action
   Future<void> getMyLocation() async {
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
+    var position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    var placemark = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
     var place = placemark[0];
     var address = '${place.thoroughfare} ${place.subThoroughfare}';
     addressModel = AddressModel(address: address, latitude: place.position.latitude, longitude: place.position.longitude);
@@ -34,12 +34,15 @@ abstract class _AddressConfirmControllerBase with Store {
 
   @action
   void setAddress(PlaceDetails place) {
+    Future.delayed(Duration.zero, () => Loader.show());
     if (place == null) {
       getMyLocation();
+      Future.delayed(Duration.zero, () => Loader.hide());
     } else {
       var address = '${place.formattedAddress}';
       addressModel = AddressModel(address: address, latitude: place.geometry.location.lat, longitude: place.geometry.location.lng);
       addressTextController.text = address;
+      Future.delayed(Duration.zero, () => Loader.hide());
     }
   }
 

@@ -28,7 +28,7 @@ class FacebookModel {
   factory FacebookModel.fromJson(Map<String, dynamic> json) => _$FacebookModelFromJson(json);
   Map<String, dynamic> toJson() => _$FacebookModelToJson(this);
 
-  static _pictureFromJson(data) {
+  static String _pictureFromJson(data) {
     print(data);
     return data['data']['url'];
   }

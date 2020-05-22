@@ -18,10 +18,9 @@ class AddressConfirmPage extends StatefulWidget {
   _AddressConfirmPageState createState() => _AddressConfirmPageState();
 }
 
-class _AddressConfirmPageState extends State<AddressConfirmPage> {
-  
-  var controller = Modular.get<AddressConfirmController>();
-  Completer<GoogleMapController> _mapsController = Completer();
+class _AddressConfirmPageState extends ModularState<AddressConfirmPage, AddressConfirmController> {
+  // var controller = Modular.get<AddressConfirmController>();
+  final Completer<GoogleMapController> _mapsController = Completer();
 
   @override
   void initState() {
@@ -60,25 +59,30 @@ class _AddressConfirmPageState extends State<AddressConfirmPage> {
             ),
             Observer(builder: (_) {
               return Expanded(
-                child: controller.addressModel != null ? GoogleMap(
-                  mapType: MapType.normal,
-                  markers: [Marker(
-                      markerId: MarkerId(controller.addressModel.id.toString()),
-                      position: LatLng(controller.addressModel.latitude, controller.addressModel.longitude),
-                      infoWindow: InfoWindow(title: controller.addressModel.address,),
-                      onTap: () {
-                      },
-                    )].toSet(),
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(controller.addressModel.latitude, controller.addressModel.longitude),
-                    zoom: 20,
-                  ),
-                  myLocationButtonEnabled: false,
-                  myLocationEnabled: false,
-                  onMapCreated: (GoogleMapController controller) {
-                    _mapsController.complete(controller);
-                  },
-                ) : Container(),
+                child: controller.addressModel != null
+                    ? GoogleMap(
+                        mapType: MapType.normal,
+                        markers: {
+                          Marker(
+                            markerId: MarkerId(controller.addressModel.id.toString()),
+                            position: LatLng(controller.addressModel.latitude, controller.addressModel.longitude),
+                            infoWindow: InfoWindow(
+                              title: controller.addressModel.address,
+                            ),
+                            onTap: () {},
+                          ),
+                        },
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(controller.addressModel.latitude, controller.addressModel.longitude),
+                          zoom: 16,
+                        ),
+                        myLocationButtonEnabled: false,
+                        myLocationEnabled: false,
+                        onMapCreated: (GoogleMapController controller) {
+                          _mapsController.complete(controller);
+                        },
+                      )
+                    : Container(),
               );
             }),
             //AIzaSyApf37zicYFGFP8NzcehFxxDDQ9lkZymrM

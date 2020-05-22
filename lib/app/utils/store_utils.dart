@@ -3,7 +3,7 @@ import 'package:mobx/mobx.dart';
 enum StoreState { initial, loading, loaded, error }
 
 class StoreUtils {
-  static statusCheck(ObservableFuture future) {
+  static StoreState statusCheck(ObservableFuture future) {
     if (future == null) {
       return StoreState.initial;
     }
