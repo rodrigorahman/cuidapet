@@ -25,35 +25,58 @@ scripts:
   mobx_build: flutter pub run build_runner build --delete-conflicting-outputs
 
 dependencies:
+  
+  # Rest com refresh Token
   dio: ^3.0.9
+  flutter_secure_storage: ^3.3.3
+  shared_preferences: ^0.5.7+2
+
   flutter_mobx: ^1.1.0
   mobx: ^1.1.1
+  
   flutter_modular: ^1.1.2
+  
   flutter:
     sdk: flutter
+  
   flutter_screenutil: ^1.1.0
   get: ^2.2.8
   flutter_icons: ^1.1.0
   flutter_dotenv: ^2.1.0
-  json_annotation: ^3.0.1
-  firebase_messaging: ^6.0.15
-  shared_preferences: ^0.5.7+2
   oktoast: ^2.3.2
-  flutter_secure_storage: ^3.3.3
-  flutter_facebook_login: ^3.0.0
+  
+  # JSON
+  json_annotation: ^3.0.1
+
+  
+  #sqlite
   sqflite: ^1.3.0+1
   path: ^1.6.4
+  
+  #Geo Location
   geolocator: ^5.3.1
   google_maps_flutter: ^0.5.27+3
   google_maps_webservice: ^0.0.16
+  
+  # Auto Complete
   flutter_typeahead: ^1.8.1
+  
   intl: ^0.16.1
   url_launcher: ^5.4.7
-  map_launcher: ^0.4.5
+
   flutter_calendar_carousel: ^1.4.12
   flutter_datetime_picker: ^1.3.8
+
+  # Firebase
   firebase_auth: ^0.16.0
   cloud_firestore: ^0.13.5
+  firebase_messaging: ^6.0.15
+  flutter_facebook_login: ^3.0.0
+
+
+  # camera
+  camera: ^0.5.8+2
+  path_provider: ^1.6.9
 
 
   # The following adds the Cupertino Icons font to your application.

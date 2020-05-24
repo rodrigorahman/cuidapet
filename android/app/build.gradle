@@ -34,8 +34,12 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "br.com.programacaonapratica.cuidapet"
-        // ! alterar para versão 18
-        minSdkVersion 18
+        // ! alterar para versão 18 por causa do facebook
+        // minSdkVersion 18
+
+        // ! alterar para versão 21 por causa da camera
+        minSdkVersion 21
+        
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
