@@ -18,22 +18,12 @@ class LoginReactions with Disposable {
   void start() {
     disposer = [
       reaction((_) => _controller.loginState, (f) {
-        Loader.run(f, onLoaded: () {
-          _controller.confirmLogin();
-        }, onError: () {
+        Loader.run(f, onError: () {
           showToast(_controller.errorMessage, backgroundColor: Colors.red);
         });
       }),
       reaction((_) => _controller.confirmLoginState, (f) {
-        print(_controller.confirmLoginState);
-        Loader.run(f, onLoaded: () async {
-          if (_controller.accessModel.created) {
-            // Direcionar para inserir uma senha
-            await Get.bottomSheet(ChangePasswordModalWidget(), isDismissible: false);
-          } 
-          
-          await Modular.to.pushNamedAndRemoveUntil('/home', ModalRoute.withName('/')) ;
-        }, onError: () async {
+        Loader.run(f, onError: () async {
           showToast(_controller.errorMessage, backgroundColor: Colors.red);
           final prefs = await SharedPrefsRepository.instance;
           await prefs.clear();

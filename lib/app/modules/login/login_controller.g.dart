@@ -96,8 +96,9 @@ mixin _$LoginController on _LoginControllerBase, Store {
       AsyncAction('_LoginControllerBase.confirmLogin');
 
   @override
-  Future<void> confirmLogin() {
-    return _$confirmLoginAsyncAction.run(() => super.confirmLogin());
+  Future<void> confirmLogin({bool facebook = false}) {
+    return _$confirmLoginAsyncAction
+        .run(() => super.confirmLogin(facebook: facebook));
   }
 
   final _$facebookLoginAsyncAction =

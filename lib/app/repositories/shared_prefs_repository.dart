@@ -5,10 +5,13 @@ import 'package:cuidapet/app/models/usuario_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsRepository {
+  
   static const _DEVICE_TOKEN = '/DEVICE_TOKEN/';
   static const _ACCESS_TOKEN = '/ACCESS_TOKEN/';
   static const _ADDRESS_SELECTED = '/ADDRESS_SELECTED/';
   static const _USER_DATA = '/USER_DATA/';
+  static const _IS_SUPPLIER = '/IS_SUPPLIER/';
+  
   final SharedPreferences prefs;
 
   SharedPrefsRepository._(this.prefs);
@@ -53,4 +56,10 @@ class SharedPrefsRepository {
   Future<void> selectAddress(AddressModel address) async {
     await prefs.setString(_ADDRESS_SELECTED, address.toJson());
   }
+
+  Future<void> setIsSupplier(bool isSupplier) async {
+    await prefs.setBool(_IS_SUPPLIER, isSupplier);
+  }
+
+  bool get isSupplier => prefs.containsKey(_IS_SUPPLIER) ? prefs.getBool(_IS_SUPPLIER) : false;
 }

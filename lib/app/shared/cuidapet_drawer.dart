@@ -14,6 +14,7 @@ class CuidapetDrawer extends Drawer {
                 FutureBuilder<SharedPrefsRepository>(
                     future: SharedPrefsRepository.instance,
                     builder: (context, snapshot) {
+                      var prefs = snapshot.data;
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
                           return Container();
@@ -25,7 +26,10 @@ class CuidapetDrawer extends Drawer {
                           );
                           break;
                         case ConnectionState.done:
-                          var user = snapshot.data.userData;
+                          
+                          var user = prefs.userData;
+                          var isSupplier = prefs.isSupplier;
+
                           return Column(
                             children: <Widget>[
                               CircleAvatar(
@@ -35,7 +39,34 @@ class CuidapetDrawer extends Drawer {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text(user.email)
+                              Text(user.email),
+                              ListView(
+                                shrinkWrap: true,
+                                children: <Widget>[
+                                  ListTile(
+                                    onTap: () => !isSupplier ? Modular.to.pushNamed('/meus_agendamentos') : Modular.to.pushNamed('/meus_agendamentos_fornecedor'),
+                                    leading: Icon(Icons.receipt),
+                                    title: Text('Meus agendamentos'),
+                                  ),
+                                  ListTile(
+                                    onTap: () => Modular.to.pushNamed('/chat_list'),
+                                    leading: Icon(Icons.chat),
+                                    title: Text('Chats'),
+                                  ),
+                                  ListTile(
+                                    onTap: () async {
+                                      Loader.show();
+                                      var prefs = await SharedPrefsRepository.instance;
+                                      prefs.logout();
+                                      Loader.hide();
+                                      await Modular.get<AdressesRepository>().clearDatabase();
+                                      await Modular.to.pushNamedAndRemoveUntil('/', (_) => false);
+                                    },
+                                    leading: Icon(Icons.exit_to_app),
+                                    title: Text('Sair'),
+                                  ),
+                                ],
+                              )
                             ],
                           );
                           break;
@@ -43,35 +74,6 @@ class CuidapetDrawer extends Drawer {
                           return Container();
                       }
                     }),
-                Expanded(
-                                  child: ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      ListTile(
-                        onTap: () => Modular.to.pushNamed('/meus_agendamentos'),
-                        leading: Icon(Icons.receipt),
-                        title: Text('Meus agendamentos'),
-                      ),
-                       ListTile(
-                        onTap: () => Modular.to.pushNamed('/chat_list'),
-                        leading: Icon(Icons.chat),
-                        title: Text('Chats'),
-                      ),
-                      ListTile(
-                        onTap: () async {
-                          Loader.show();
-                          var prefs = await SharedPrefsRepository.instance;
-                          prefs.logout();
-                          Loader.hide();
-                          await Modular.get<AdressesRepository>().clearDatabase();
-                          await Modular.to.pushNamedAndRemoveUntil('/', (_) => false);
-                        },
-                        leading: Icon(Icons.exit_to_app),
-                        title: Text('Sair'),
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
           ),

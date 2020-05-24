@@ -10,7 +10,12 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:get/get.dart';
 import 'package:mobx/mobx.dart';
+import 'package:oktoast/oktoast.dart';
+
+import 'change_password_modal/change_password_modal_widget.dart';
 
 part 'login_controller.g.dart';
 
@@ -48,36 +53,50 @@ abstract class _LoginControllerBase with Store {
     var fireAuth = FirebaseAuth.instance;
     if (formKey.currentState.validate()) {
       _loginFuture = ObservableFuture(_repository.login(loginEditController.text, password: passwordEditController.text));
+      var sharedPrefsRepository = (await SharedPrefsRepository.instance);
       try {
-        
         accessModel = await _loginFuture;
-        var sharedPrefsRepository = (await SharedPrefsRepository.instance);
         await sharedPrefsRepository.registerAccessToken(accessModel.accessToken);
         await fireAuth.signInWithEmailAndPassword(email: loginEditController.text, password: passwordEditController.text);
-
+        var isSupplier = await _repository.isSupplier();
+        await sharedPrefsRepository.setIsSupplier(isSupplier);
+        await confirmLogin();
       } on DioError catch (e) {
-        errorMessage = e.response.data['message'];
+        await sharedPrefsRepository.clear();
+        showToast(e.response.data['message']);
+        rethrow;
+      } on PlatformException catch (e) {
+        await sharedPrefsRepository.clear();
+        showToast(e.message);
+        rethrow;
       }
     }
   }
 
   @action
-  Future<void> confirmLogin() async {
-    _confirmLoginFuture = ObservableFuture(_repository.confirmLogin());
-    final access = await _confirmLoginFuture;
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: null,
-      statusBarColor: ThemeUtils.primaryColor, // status bar color
-    ));
+  Future<void> confirmLogin({bool facebook=false}) async {
     var sharedPrefsRepository = (await SharedPrefsRepository.instance);
-    
-    await sharedPrefsRepository.registerAccessToken(access.accessToken);
+    try {
+      _confirmLoginFuture = ObservableFuture(_repository.confirmLogin());
+      final access = await _confirmLoginFuture;
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: null,
+        statusBarColor: ThemeUtils.primaryColor, // status bar color
+      ));
 
-    await SecurityStorageRepository().registerRefreshToken(access.refreshToken);
-    
-    final usuario = await _repository.recuperarDadosUsuario();
-    await sharedPrefsRepository.registerUserData(usuario);
-    
+      await sharedPrefsRepository.registerAccessToken(access.accessToken);
+
+      await SecurityStorageRepository().registerRefreshToken(access.refreshToken);
+
+      final usuario = await _repository.recuperarDadosUsuario();
+      await sharedPrefsRepository.registerUserData(usuario);
+
+      await Modular.to.pushNamedAndRemoveUntil('/home', ModalRoute.withName('/'));
+    } catch (e) {
+      print(e);
+      await sharedPrefsRepository.clear();
+      showToast(e.response.data['message']);
+    }
   }
 
   @action
@@ -97,8 +116,17 @@ abstract class _LoginControllerBase with Store {
       accessModel = await _loginFuture;
       var sharedPrefsRepository = (await SharedPrefsRepository.instance);
       await sharedPrefsRepository.registerAccessToken(accessModel.accessToken);
+
+      if (accessModel.created) {
+        // Direcionar para inserir uma senha
+        await Get.bottomSheet(ChangePasswordModalWidget(), isDismissible: false);
+      }
+      var isSupplier = await _repository.isSupplier();
+      await sharedPrefsRepository.setIsSupplier(isSupplier);
+      await confirmLogin(facebook: true);
     } catch (e) {
       print(e);
+      rethrow;
     }
   }
 }

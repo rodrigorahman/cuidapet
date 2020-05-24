@@ -61,4 +61,9 @@ class UsuarioRepository {
     );
   }
 
+  Future<bool> isSupplier() {
+    return CustomDio.authInstance.get('/login/isSupplier')
+      .then((res) => res.data['isSupplier']);
+  }
+
 }

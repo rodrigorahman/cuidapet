@@ -1,0 +1,5 @@
+lib/app/modules/meus_agendamentos_fornecedor/meus_agendamentos_fornecedor_module.dart
+lib/app/modules/meus_agendamentos_fornecedor/meus_agendamentos_fornecedor_page.dart
+test/app/modules/meus_agendamentos_fornecedor/meus_agendamentos_fornecedor_page_test.dart
+lib/app/modules/meus_agendamentos_fornecedor/meus_agendamentos_fornecedor_controller.dart
+test/app/modules/meus_agendamentos_fornecedor/meus_agendamentos_fornecedor_controller_test.dart
