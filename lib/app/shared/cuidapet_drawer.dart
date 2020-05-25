@@ -44,7 +44,7 @@ class CuidapetDrawer extends Drawer {
                                 shrinkWrap: true,
                                 children: <Widget>[
                                   ListTile(
-                                    onTap: () => !isSupplier ? Modular.to.pushNamed('/meus_agendamentos') : Modular.to.pushNamed('/meus_agendamentos_fornecedor'),
+                                    onTap: () => Modular.to.pushNamed('/meus_agendamentos'),
                                     leading: Icon(Icons.receipt),
                                     title: Text('Meus agendamentos'),
                                   ),

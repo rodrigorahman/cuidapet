@@ -7,7 +7,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:mobx/mobx.dart';
 
-
 part 'address_controller.g.dart';
 
 class AddressController = _AddressControllerBase with _$AddressController;
@@ -59,6 +58,11 @@ abstract class _AddressControllerBase with Store {
 
   Future<bool> get addressSelected async {
     final prefs = await SharedPrefsRepository.instance;
-    return prefs.addressSelected != null; 
+    return prefs.addressSelected != null;
+  }
+
+  Future<void> minhaLocalizacao() async {
+    var editar = await Modular.to.pushNamed('/address/confirm');
+    editAddress(editar);
   }
 }

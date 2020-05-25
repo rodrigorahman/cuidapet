@@ -25,7 +25,11 @@ class _AddressConfirmPageState extends ModularState<AddressConfirmPage, AddressC
   @override
   void initState() {
     super.initState();
-    controller.setAddress(widget.address);
+    if(widget.address == null) {
+      controller.getMyLocation();
+    }else{
+      controller.setAddress(widget.address);
+    }
   }
 
   @override

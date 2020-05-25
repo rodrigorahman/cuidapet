@@ -13,11 +13,12 @@ class FacebookRepository {
     print(result.status);
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
+
         var token = result.accessToken.token;
+
         var firebaseAuth = FirebaseAuth.instance;
         final facebookAuthCred = FacebookAuthProvider.getCredential(accessToken: token);
-        final user = await firebaseAuth.signInWithCredential(facebookAuthCred);
-        print(user);
+        await firebaseAuth.signInWithCredential(facebookAuthCred);
 
         var rest = CustomDio.instance;
         var graphResponse = await rest.get('https://graph.facebook.com/v4.0/me?fields=birthday,name,first_name,last_name,email,picture,link&access_token=$token');

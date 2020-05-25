@@ -52,6 +52,7 @@ abstract class _LoginControllerBase with Store {
     errorMessage = null;
     var fireAuth = FirebaseAuth.instance;
     if (formKey.currentState.validate()) {
+      Loader.show();
       _loginFuture = ObservableFuture(_repository.login(loginEditController.text, password: passwordEditController.text));
       var sharedPrefsRepository = (await SharedPrefsRepository.instance);
       try {
@@ -61,13 +62,16 @@ abstract class _LoginControllerBase with Store {
         var isSupplier = await _repository.isSupplier();
         await sharedPrefsRepository.setIsSupplier(isSupplier);
         await confirmLogin();
+        Loader.hide();
       } on DioError catch (e) {
         await sharedPrefsRepository.clear();
         showToast(e.response.data['message']);
+        Loader.hide();
         rethrow;
       } on PlatformException catch (e) {
         await sharedPrefsRepository.clear();
         showToast(e.message);
+        Loader.hide();
         rethrow;
       }
     }
@@ -75,6 +79,7 @@ abstract class _LoginControllerBase with Store {
 
   @action
   Future<void> confirmLogin({bool facebook=false}) async {
+    Loader.show();
     var sharedPrefsRepository = (await SharedPrefsRepository.instance);
     try {
       _confirmLoginFuture = ObservableFuture(_repository.confirmLogin());
@@ -92,9 +97,11 @@ abstract class _LoginControllerBase with Store {
       await sharedPrefsRepository.registerUserData(usuario);
 
       await Modular.to.pushNamedAndRemoveUntil('/home', ModalRoute.withName('/'));
+      Loader.hide();
     } catch (e) {
       print(e);
       await sharedPrefsRepository.clear();
+      Loader.hide();
       showToast(e.response.data['message']);
     }
   }
@@ -111,21 +118,23 @@ abstract class _LoginControllerBase with Store {
     try {
       Loader.show();
       final facebookData = await FacebookRepository().login();
-      Loader.hide();
+      
       _loginFuture = ObservableFuture(_repository.login(facebookData.email, facebookLogin: true, avatar: facebookData.largePicture));
       accessModel = await _loginFuture;
       var sharedPrefsRepository = (await SharedPrefsRepository.instance);
       await sharedPrefsRepository.registerAccessToken(accessModel.accessToken);
 
-      if (accessModel.created) {
-        // Direcionar para inserir uma senha
-        await Get.bottomSheet(ChangePasswordModalWidget(), isDismissible: false);
-      }
-      var isSupplier = await _repository.isSupplier();
-      await sharedPrefsRepository.setIsSupplier(isSupplier);
+      // if (accessModel.created) {
+      //   // Direcionar para inserir uma senha
+      //   await Get.bottomSheet(ChangePasswordModalWidget(), isDismissible: false);
+      // }
+      // var isSupplier = await _repository.isSupplier();
+      // await sharedPrefsRepository.setIsSupplier(isSupplier);
+      Loader.hide();
       await confirmLogin(facebook: true);
     } catch (e) {
       print(e);
+      Loader.hide();
       rethrow;
     }
   }

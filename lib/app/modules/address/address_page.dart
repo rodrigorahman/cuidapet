@@ -120,12 +120,7 @@ class _AddressPageState extends ModularState<AddressPage, AddressController> {
                   _buildAddressContainer(
                       currentLocation: true,
                       title: 'Localização Atual',
-                      onPressed: () async {
-                        var editar = await Modular.to.pushNamed('/address/confirm');
-                        // var editar = await Get.to(AddressConfirmPage());
-                        controller.editAddress(editar);
-                        // setar na controller o endereco
-                      }),
+                      onPressed: () => controller.minhaLocalizacao()),
                   Observer(builder: (_) {
                     return FutureBuilder(
                       future: controller.adressesFuture,

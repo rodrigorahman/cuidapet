@@ -24,26 +24,23 @@ abstract class _AddressConfirmControllerBase with Store {
 
   @action
   Future<void> getMyLocation() async {
+    Future.delayed(Duration.zero, () => Loader.show());
     var position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     var placemark = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
     var place = placemark[0];
     var address = '${place.thoroughfare} ${place.subThoroughfare}';
     addressModel = AddressModel(address: address, latitude: place.position.latitude, longitude: place.position.longitude);
     addressTextController.text = address;
+    Future.delayed(Duration.zero, () => Loader.hide());
   }
 
   @action
   void setAddress(PlaceDetails place) {
     Future.delayed(Duration.zero, () => Loader.show());
-    if (place == null) {
-      getMyLocation();
-      Future.delayed(Duration.zero, () => Loader.hide());
-    } else {
-      var address = '${place.formattedAddress}';
-      addressModel = AddressModel(address: address, latitude: place.geometry.location.lat, longitude: place.geometry.location.lng);
-      addressTextController.text = address;
-      Future.delayed(Duration.zero, () => Loader.hide());
-    }
+    var address = '${place.formattedAddress}';
+    addressModel = AddressModel(address: address, latitude: place.geometry.location.lat, longitude: place.geometry.location.lng);
+    addressTextController.text = address;
+    Future.delayed(Duration.zero, () => Loader.hide());
   }
 
   Future<void> saveAddress() async {
