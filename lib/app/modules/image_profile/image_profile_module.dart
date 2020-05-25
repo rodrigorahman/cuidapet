@@ -5,7 +5,7 @@ import 'package:cuidapet/app/modules/image_profile/image_profile_page.dart';
 class ImageProfileModule extends ChildModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => ImageProfileController()),
+        Bind((i) => ImageProfileController(i.get(), i.get())),
       ];
 
   @override

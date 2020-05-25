@@ -1,4 +1,5 @@
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
+import 'package:cuidapet/app/shared/auth_store.dart';
 import 'package:cuidapet/app/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -26,6 +27,7 @@ class _SplashPageState extends ModularState<SplashPage, SplashController> {
       if (prefs.accessToken == null) {
         await Modular.to.pushNamedAndRemoveUntil('/login', (_) => false);
       } else {
+        await Modular.get<AuthStore>().loaderUserModel();
         await Modular.to.pushNamedAndRemoveUntil('/home', (_) => false);
       }
     });

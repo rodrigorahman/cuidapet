@@ -9,13 +9,15 @@ class SharedPrefsRepository {
   static const _ACCESS_TOKEN = '/ACCESS_TOKEN/';
   static const _ADDRESS_SELECTED = '/ADDRESS_SELECTED/';
   static const _USER_DATA = '/USER_DATA/';
-  final SharedPreferences prefs;
+  static SharedPreferences prefs;
+  static SharedPrefsRepository _instanceRepository;
 
-  SharedPrefsRepository._(this.prefs);
+  SharedPrefsRepository._();
 
   static Future<SharedPrefsRepository> get instance async {
-    final prefs = await SharedPreferences.getInstance();
-    return SharedPrefsRepository._(prefs);
+    prefs ??= await SharedPreferences.getInstance();
+    _instanceRepository ??= SharedPrefsRepository._();
+    return _instanceRepository;
   }
 
   String get deviceToken {

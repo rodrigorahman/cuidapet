@@ -10,7 +10,7 @@ class LoginModule extends ChildModule {
   @override
   List<Bind> get binds => [
         Bind((i) => ChangePasswordModalController(i.get<UsuarioRepository>())),
-        Bind((i) => LoginController(i.get())),
+        Bind((i) => LoginController(i.get(), i.get())),
         Bind((i) => LoginReactions(i.get())),
       ];
 

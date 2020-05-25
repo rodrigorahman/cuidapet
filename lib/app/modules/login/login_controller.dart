@@ -3,6 +3,7 @@ import 'package:cuidapet/app/repositories/facebook_repository.dart';
 import 'package:cuidapet/app/repositories/usuario_repository.dart';
 import 'package:cuidapet/app/repositories/security_storage_repository.dart';
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
+import 'package:cuidapet/app/shared/auth_store.dart';
 import 'package:cuidapet/app/shared/loader_component.dart';
 import 'package:cuidapet/app/utils/store_utils.dart';
 import 'package:cuidapet/app/utils/theme_utils.dart';
@@ -11,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
+import 'package:oktoast/oktoast.dart';
 
 part 'login_controller.g.dart';
 
@@ -21,8 +23,9 @@ abstract class _LoginControllerBase with Store {
   final loginEditController = TextEditingController();
   final passwordEditController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final AuthStore authStore;
 
-  _LoginControllerBase(this._repository);
+  _LoginControllerBase(this._repository, this.authStore);
 
   @observable
   AccessServiceModel accessModel;
@@ -56,7 +59,9 @@ abstract class _LoginControllerBase with Store {
         await fireAuth.signInWithEmailAndPassword(email: loginEditController.text, password: passwordEditController.text);
 
       } on DioError catch (e) {
-        errorMessage = e.response.data['message'];
+        showToast(e.message);
+        
+        // errorMessage = e.response.data['message'];
       }
     }
   }
@@ -75,8 +80,10 @@ abstract class _LoginControllerBase with Store {
 
     await SecurityStorageRepository().registerRefreshToken(access.refreshToken);
     
+
     final usuario = await _repository.recuperarDadosUsuario();
-    await sharedPrefsRepository.registerUserData(usuario);
+    await authStore.setUser(usuario);
+    // await sharedPrefsRepository.registerUserData(usuario);
     
   }
 

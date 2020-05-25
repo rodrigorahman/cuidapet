@@ -2,7 +2,10 @@ import 'package:cuidapet/app/repositories/addresses_repository.dart';
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
 import 'package:cuidapet/app/shared/loader_component.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+
+import 'auth_store.dart';
 
 class CuidapetDrawer extends Drawer {
   CuidapetDrawer()
@@ -11,40 +14,49 @@ class CuidapetDrawer extends Drawer {
             margin: EdgeInsets.only(top: 70),
             child: Column(
               children: <Widget>[
-                FutureBuilder<SharedPrefsRepository>(
-                    future: SharedPrefsRepository.instance,
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                          return Container();
-                          break;
-                        case ConnectionState.waiting:
-                        case ConnectionState.active:
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                          break;
-                        case ConnectionState.done:
-                          var user = snapshot.data.userData;
-                          return Column(
-                            children: <Widget>[
-                              CircleAvatar(
+                Observer(
+                  builder: (_) {
+                    var user = Modular.get<AuthStore>().usuario;
+                    return Column(children: <Widget>[
+                      Container(
+                        height: 200,
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: CircleAvatar(
                                 backgroundImage: user.imgAvatar != null ? NetworkImage(user.imgAvatar) : null,
                                 radius: 100,
                               ),
-                              SizedBox(
-                                height: 10,
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white70,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: InkWell(
+                                  onTap: () => Modular.to.pushNamed('/image_profile'),
+                                  child: Text(
+                                    'Alterar Imagem',
+                                  ),
+                                ),
                               ),
-                              Text(user.email)
-                            ],
-                          );
-                          break;
-                        default:
-                          return Container();
-                      }
-                    }),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(user.email)
+                    ]);
+                  },
+                ),
                 Expanded(
-                                  child: ListView(
+                  child: ListView(
                     shrinkWrap: true,
                     children: <Widget>[
                       ListTile(
@@ -52,7 +64,7 @@ class CuidapetDrawer extends Drawer {
                         leading: Icon(Icons.receipt),
                         title: Text('Meus agendamentos'),
                       ),
-                       ListTile(
+                      ListTile(
                         onTap: () => Modular.to.pushNamed('/chat_list'),
                         leading: Icon(Icons.chat),
                         title: Text('Chats'),
