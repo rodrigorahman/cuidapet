@@ -11,10 +11,12 @@ import 'package:cuidapet/app/repositories/fornecedor_repository.dart';
 import 'package:cuidapet/app/repositories/usuario_repository.dart';
 import 'package:cuidapet/app/app_controller.dart';
 import 'package:cuidapet/app/modules/splash/splash_module.dart';
+import 'package:cuidapet/app/shared/auth_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:cuidapet/app/app_widget.dart';
 
+import 'modules/image_profile/image_profile_module.dart';
 import 'modules/login/login_module.dart';
 
 class AppModule extends MainModule {
@@ -22,6 +24,8 @@ class AppModule extends MainModule {
   List<Bind> get binds => [
         // Administra a conexão com o banco
         Bind((i) => ConnectionADM(), lazy: false),
+        
+        Bind((i) => AuthStore()),
 
         // Repositories Geral da aplicacao
         Bind((i) => UsuarioRepository()),
@@ -42,6 +46,7 @@ class AppModule extends MainModule {
         Router('/meus_agendamentos', module: MeusAgendamentosModule()),
         Router('/meus_agendamentos_fornecedor', module: MeusAgendamentosFornecedorModule()),
         Router('/chat_list', module: ChatListModule()),
+        Router('/image_profile', module: ImageProfileModule()),
       ];
 
   @override

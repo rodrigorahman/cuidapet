@@ -10,15 +10,15 @@ class SharedPrefsRepository {
   static const _ACCESS_TOKEN = '/ACCESS_TOKEN/';
   static const _ADDRESS_SELECTED = '/ADDRESS_SELECTED/';
   static const _USER_DATA = '/USER_DATA/';
-  static const _IS_SUPPLIER = '/IS_SUPPLIER/';
-  
-  final SharedPreferences prefs;
+  static SharedPreferences prefs;
+  static SharedPrefsRepository _instanceRepository;
 
-  SharedPrefsRepository._(this.prefs);
+  SharedPrefsRepository._();
 
   static Future<SharedPrefsRepository> get instance async {
-    final prefs = await SharedPreferences.getInstance();
-    return SharedPrefsRepository._(prefs);
+    prefs ??= await SharedPreferences.getInstance();
+    _instanceRepository ??= SharedPrefsRepository._();
+    return _instanceRepository;
   }
 
   String get deviceToken {
@@ -57,9 +57,4 @@ class SharedPrefsRepository {
     await prefs.setString(_ADDRESS_SELECTED, address.toJson());
   }
 
-  Future<void> setIsSupplier(bool isSupplier) async {
-    await prefs.setBool(_IS_SUPPLIER, isSupplier);
-  }
-
-  bool get isSupplier => prefs.containsKey(_IS_SUPPLIER) ? prefs.getBool(_IS_SUPPLIER) : false;
 }

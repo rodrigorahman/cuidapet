@@ -37,10 +37,12 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>fbapi</string>
-		<string>fb-messenger-share-api</string>
-		<string>fbauth2</string>
-		<string>fbshareextension</string>
+		<string>comgooglemaps</string>
+		<string>baidumap</string>
+		<string>iosamap</string>
+		<string>waze</string>
+		<string>yandexmaps</string>
+		<string>yandexnavi</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -71,14 +73,9 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>LSApplicationQueriesSchemes</key>
-<array>
-    <string>comgooglemaps</string>
-    <string>baidumap</string>
-    <string>iosamap</string>
-    <string>waze</string>
-    <string>yandexmaps</string>
-    <string>yandexnavi</string>
-</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Precisamos utilizar a camera para atualização do perfil</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Precisamos utilizar a camera para atualização do perfil</string>
 </dict>
 </plist>

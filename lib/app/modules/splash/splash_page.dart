@@ -1,4 +1,5 @@
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
+import 'package:cuidapet/app/shared/auth_store.dart';
 import 'package:cuidapet/app/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -22,10 +23,13 @@ class _SplashPageState extends ModularState<SplashPage, SplashController> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       ScreenUtil.init(context);
       ThemeUtils.init(context);
-      final prefs = await SharedPrefsRepository.instance;
-      if (prefs.accessToken == null) {
+//      final prefs = await SharedPrefsRepository.instance;
+      final authStore = Modular.get<AuthStore>();
+      var isLogged = await authStore.isLogged();
+      if (!isLogged) {
         await Modular.to.pushNamedAndRemoveUntil('/login', (_) => false);
       } else {
+        await authStore.loaderUserModel();
         await Modular.to.pushNamedAndRemoveUntil('/home', (_) => false);
       }
     });

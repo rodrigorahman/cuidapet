@@ -3,6 +3,7 @@ import 'package:cuidapet/app/repositories/facebook_repository.dart';
 import 'package:cuidapet/app/repositories/usuario_repository.dart';
 import 'package:cuidapet/app/repositories/security_storage_repository.dart';
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
+import 'package:cuidapet/app/shared/auth_store.dart';
 import 'package:cuidapet/app/shared/loader_component.dart';
 import 'package:cuidapet/app/utils/store_utils.dart';
 import 'package:cuidapet/app/utils/theme_utils.dart';
@@ -15,8 +16,6 @@ import 'package:get/get.dart';
 import 'package:mobx/mobx.dart';
 import 'package:oktoast/oktoast.dart';
 
-import 'change_password_modal/change_password_modal_widget.dart';
-
 part 'login_controller.g.dart';
 
 class LoginController = _LoginControllerBase with _$LoginController;
@@ -26,8 +25,9 @@ abstract class _LoginControllerBase with Store {
   final loginEditController = TextEditingController();
   final passwordEditController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final AuthStore authStore;
 
-  _LoginControllerBase(this._repository);
+  _LoginControllerBase(this._repository, this.authStore);
 
   @observable
   AccessServiceModel accessModel;
@@ -59,20 +59,12 @@ abstract class _LoginControllerBase with Store {
         accessModel = await _loginFuture;
         await sharedPrefsRepository.registerAccessToken(accessModel.accessToken);
         await fireAuth.signInWithEmailAndPassword(email: loginEditController.text, password: passwordEditController.text);
-        var isSupplier = await _repository.isSupplier();
-        await sharedPrefsRepository.setIsSupplier(isSupplier);
         await confirmLogin();
         Loader.hide();
       } on DioError catch (e) {
-        await sharedPrefsRepository.clear();
-        showToast(e.response.data['message']);
-        Loader.hide();
-        rethrow;
-      } on PlatformException catch (e) {
-        await sharedPrefsRepository.clear();
         showToast(e.message);
-        Loader.hide();
-        rethrow;
+        
+        // errorMessage = e.response.data['message'];
       }
     }
   }
@@ -94,7 +86,7 @@ abstract class _LoginControllerBase with Store {
       await SecurityStorageRepository().registerRefreshToken(access.refreshToken);
 
       final usuario = await _repository.recuperarDadosUsuario();
-      await sharedPrefsRepository.registerUserData(usuario);
+      await authStore.setUser(usuario);
 
       await Modular.to.pushNamedAndRemoveUntil('/home', ModalRoute.withName('/'));
       Loader.hide();

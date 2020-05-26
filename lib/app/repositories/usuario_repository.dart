@@ -60,6 +60,15 @@ class UsuarioRepository {
       },
     );
   }
+  
+  Future<UsuarioModel> updateImageAvatar(String urlImagem) {
+    return CustomDio.authInstance.put(
+      '/usuario/avatar',
+      data: {
+        'url_avatar': urlImagem
+      },
+    ).then((res) => UsuarioModel.fromJson(res.data));
+  }
 
   Future<bool> isSupplier() {
     return CustomDio.authInstance.get('/login/isSupplier')
