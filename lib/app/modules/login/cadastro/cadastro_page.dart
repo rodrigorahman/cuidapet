@@ -18,6 +18,10 @@ class _CadastroPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       backgroundColor: ThemeUtils.primaryColor,
       body: Container(
         width: ScreenUtil.screenWidthDp,
@@ -33,7 +37,6 @@ class _CadastroPageState
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: ScreenUtil.statusBarHeight + 30),
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

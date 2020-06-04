@@ -1,9 +1,20 @@
+import 'dart:async';
+
+import 'package:connectivity/connectivity.dart';
+import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
+import 'package:cuidapet/app/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:get/get.dart';
 import 'package:oktoast/oktoast.dart';
 
-class AppWidget extends StatelessWidget{
+class AppWidget extends StatefulWidget {
+  @override
+  _AppWidgetState createState() => _AppWidgetState();
+}
+
+class _AppWidgetState extends State<AppWidget> {
+
   @override
   Widget build(BuildContext context) {
     return OKToast(

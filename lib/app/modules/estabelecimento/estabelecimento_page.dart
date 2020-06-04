@@ -52,10 +52,11 @@ class _EstabelecimentoPageState extends ModularState<EstabelecimentoPage, Estabe
           }
           var f = snapshot.data;
           return CustomScrollView(
+
             slivers: <Widget>[
               SliverAppBar(
                 expandedHeight: 300,
-                pinned: false,
+                pinned: true,
                 backgroundColor: Colors.white,
                 flexibleSpace: FlexibleSpaceBar(
                   stretchModes: [

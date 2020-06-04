@@ -8,9 +8,9 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_webservice/places.dart';
 
-
 class AddressPage extends StatefulWidget {
   final String title;
+
   const AddressPage({Key key, this.title = 'Address'}) : super(key: key);
 
   @override
@@ -18,8 +18,6 @@ class AddressPage extends StatefulWidget {
 }
 
 class _AddressPageState extends ModularState<AddressPage, AddressController> {
-  
-
   @override
   void initState() {
     super.initState();
@@ -36,14 +34,14 @@ class _AddressPageState extends ModularState<AddressPage, AddressController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if(await controller.addressSelected) {
+        if (await controller.addressSelected) {
           return true;
-        }else {
+        } else {
           Get.snackbar('Erro', 'Por favor selecione um endereço!!!');
           return false;
         }
       },
-          child: GestureDetector(
+      child: GestureDetector(
         onTap: () {
           controller.addressFocusNode.unfocus();
         },
@@ -54,7 +52,7 @@ class _AddressPageState extends ModularState<AddressPage, AddressController> {
             elevation: 0,
           ),
           body: SingleChildScrollView(
-                    child: Container(
+            child: Container(
               padding: EdgeInsets.all(10),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -165,7 +163,11 @@ class _AddressPageState extends ModularState<AddressPage, AddressController> {
     );
   }
 
-  Widget _buildAddressContainer({bool currentLocation = false, String title, String subtitle, GestureTapCallback onPressed}) {
+  Widget _buildAddressContainer(
+      {bool currentLocation = false,
+      String title,
+      String subtitle,
+      GestureTapCallback onPressed}) {
     return InkWell(
       onTap: onPressed,
       child: Column(

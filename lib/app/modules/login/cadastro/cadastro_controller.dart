@@ -1,3 +1,4 @@
+import 'package:cuidapet/app/core/exceptions/cuidapet_exceptions.dart';
 import 'package:cuidapet/app/repositories/usuario_repository.dart';
 import 'package:cuidapet/app/shared/loader_component.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,12 +25,11 @@ abstract class _CadastroControllerBase with Store {
       if (formKey.currentState.validate()) {
         Loader.show();
         await _repository.createUsuario(loginEditController.text, passwordEditController.text);
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: loginEditController.text, password: passwordEditController.text);
         Loader.hide();
         showToast('Usuário criado com sucesso');
         Modular.to.pop();
       }
-    } catch (e) {
+    } on CreateUserException catch (e) {
       print(e);
       Loader.hide();
       showToast('Erro ao criar usuário tente novamente mais tarde');

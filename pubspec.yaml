@@ -30,6 +30,7 @@ dependencies:
   dio: ^3.0.9
   flutter_secure_storage: ^3.3.3
   shared_preferences: ^0.5.7+2
+  connectivity: ^0.4.8+6
 
   #Profile
   image_picker: ^0.6.6+4
@@ -72,7 +73,7 @@ dependencies:
 
   # Firebase
   firebase_auth: ^0.16.0
-  cloud_firestore: ^0.13.5
+  cloud_firestore: ^0.13.6
   firebase_messaging: ^6.0.15
   flutter_facebook_login: ^3.0.0
   firebase_storage: ^3.1.6
@@ -81,6 +82,9 @@ dependencies:
   # camera
   camera: ^0.5.8+2
   path_provider: ^1.6.9
+
+
+  flutter_local_notifications: ^1.4.3
 
 
   # The following adds the Cupertino Icons font to your application.

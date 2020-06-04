@@ -1,7 +1,9 @@
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
+import 'package:cuidapet/app/repositories/usuario_repository.dart';
 import 'package:cuidapet/app/shared/auth_store.dart';
 import 'package:cuidapet/app/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'splash_controller.dart';
@@ -30,6 +32,8 @@ class _SplashPageState extends ModularState<SplashPage, SplashController> {
         await Modular.to.pushNamedAndRemoveUntil('/login', (_) => false);
       } else {
         await authStore.loaderUserModel();
+        var prefs = await SharedPrefsRepository.instance;
+        await Modular.get<UsuarioRepository>().updateToken(prefs.deviceToken);
         await Modular.to.pushNamedAndRemoveUntil('/home', (_) => false);
       }
     });

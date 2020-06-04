@@ -8,7 +8,7 @@ class ChatRepository {
   final Firestore _firestore = Firestore.instance;
 
   Future<List<ChatModel>> buscarChatsUsuario() {
-    return CustomDio.authInstance.get('/chats/usuario/').then(
+    return CustomDio.authInstance.get('/chats/usuario').then(
           (res) => res.data.map<ChatModel>((c) => ChatModel.fromJson(c)).toList(),
         );
   }

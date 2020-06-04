@@ -39,7 +39,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
       drawer: CuidapetDrawer(),
       backgroundColor: Colors.grey[100],
       body: RefreshIndicator(
-        onRefresh: () => controller.findFornecedores(),
+        onRefresh: () => controller.initPage(),
         child: SingleChildScrollView(
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -223,50 +223,56 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                   itemCount: snapshot.data?.length ?? 0,
                   itemBuilder: (_, index) {
                     var f = snapshot.data[index];
-                    return Stack(
-                      children: <Widget>[
-                        Card(
-                          margin: const EdgeInsets.only(top: 40.0, left: 10, right: 10),
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                          child: Container(
-                              height: 120.0,
-                              width: double.infinity,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 45.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Text(
-                                      f.nome,
-                                      style: Theme.of(context).textTheme.subtitle2,
-                                    ),
-                                    Text('${f.distancia.toStringAsFixed(2)} km de distância')
-                                  ],
-                                ),
-                              )),
-                        ),
-                        Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                            child: CircleAvatar(radius: 40.0, backgroundColor: Colors.grey[200]),
+                    return FlatButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        Modular.to.pushNamed('/estabelecimento/${f.id}');
+                      },
+                      child: Stack(
+                        children: <Widget>[
+                          Card(
+                            margin: const EdgeInsets.only(top: 40.0, left: 10, right: 10),
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                            child: Container(
+                                height: 120.0,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 45.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Text(
+                                        f.nome,
+                                        style: Theme.of(context).textTheme.subtitle2,
+                                      ),
+                                      Text('${f.distancia.toStringAsFixed(2)} km de distância')
+                                    ],
+                                  ),
+                                )),
                           ),
-                        ),
-                        Positioned(
-                          top: 4,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                            child: CircleAvatar(
-                              radius: 35.0,
-                              backgroundImage: NetworkImage(f.logo),
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            child: Center(
+                              child: CircleAvatar(radius: 40.0, backgroundColor: Colors.grey[200]),
                             ),
                           ),
-                        )
-                      ],
+                          Positioned(
+                            top: 4,
+                            left: 0,
+                            right: 0,
+                            child: Center(
+                              child: CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(f.logo),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     );
                   },
                 );
@@ -307,7 +313,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                       color: Colors.transparent,
                     );
                   },
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data?.length ?? 0,
                   itemBuilder: (_, index) {
                     var f = snapshot.data[index];
                     return FlatButton(
@@ -388,19 +394,6 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                         ),
                       ),
                     );
-                    // return ListTile(
-                    //   title: Text('teste'),
-                    //   subtitle: Text('teste'),
-                    //   trailing: CircleAvatar(
-                    //     maxRadius: 15,
-                    //     backgroundColor: Theme.of(context).primaryColor,
-                    //     child: Icon(
-                    //       Icons.arrow_back_ios,
-                    //       color: Colors.white,
-                    //       size: 20,
-                    //     ),
-                    //   ),
-                    // );
                   },
                 );
                 break;

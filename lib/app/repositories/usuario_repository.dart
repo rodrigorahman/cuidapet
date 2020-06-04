@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:cuidapet/app/core/dio/custom_dio.dart';
+import 'package:cuidapet/app/core/exceptions/cuidapet_exceptions.dart';
 import 'package:cuidapet/app/models/access_service_model.dart';
 import 'package:cuidapet/app/models/usuario_model.dart';
 import 'package:cuidapet/app/repositories/shared_prefs_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UsuarioRepository {
   Future<AccessServiceModel> login(String user, {String password, bool facebookLogin = false, String avatar = ''}) {
@@ -58,7 +60,12 @@ class UsuarioRepository {
         'email': user,
         'senha': password,
       },
-    );
+    ).then((_) async {
+      return FirebaseAuth.instance.createUserWithEmailAndPassword(email: user, password: password);
+    }).catchError((e) {
+      print(e);
+      throw CreateUserException('Erro ao criar usuário', exception: e);
+    });
   }
   
   Future<UsuarioModel> updateImageAvatar(String urlImagem) {
@@ -73,6 +80,13 @@ class UsuarioRepository {
   Future<bool> isSupplier() {
     return CustomDio.authInstance.get('/login/isSupplier')
       .then((res) => res.data['isSupplier']);
+  }
+
+  Future<void> updateToken(String token) async {
+    await CustomDio.authInstance.put('/usuario/device', data: {
+      'token': token,
+      'platform': Platform.isIOS ? 'IOS' : 'ANDROID'
+    });
   }
 
 }

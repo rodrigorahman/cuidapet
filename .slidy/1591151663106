@@ -1,0 +1,4 @@
+lib/app/core/errors/errors_page.dart
+test/app/core/errors/errors_page_test.dart
+lib/app/core/errors/errors_controller.dart
+test/app/core/errors/errors_controller_test.dart

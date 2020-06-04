@@ -45,6 +45,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: ThemeUtils.primaryColor,
       body: Container(
         width: ScreenUtil.screenWidthDp,
@@ -167,7 +168,8 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
             FlatButton(
               onPressed: () => Modular.to.pushNamed('/login/cadastro'),
               child: Text('Cadastre-se'),
-            )
+            ),
+           
           ],
         ),
       ),

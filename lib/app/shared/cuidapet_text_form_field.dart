@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CuidapetTextFormField extends TextFormField {
-  CuidapetTextFormField({TextEditingController controller, @required String label, FormFieldValidator<String> validator})
-      : super(
+  CuidapetTextFormField({
+    TextEditingController controller,
+    @required String label,
+    FormFieldValidator<String> validator,
+  }) : super(
           controller: controller,
           decoration: InputDecoration(
             labelText: label,

@@ -1,3 +1,5 @@
+import 'package:cuidapet/app/core/connection/connection_check.dart';
+import 'package:cuidapet/app/core/connection/no_connection_dialog.dart';
 import 'package:cuidapet/app/core/database/connection_adm.dart';
 import 'package:cuidapet/app/modules/address/address_module.dart';
 import 'package:cuidapet/app/modules/agendamento/agendamento_module.dart';
@@ -16,6 +18,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:cuidapet/app/app_widget.dart';
 
+import 'core/errors/errors_page.dart';
 import 'modules/image_profile/image_profile_module.dart';
 import 'modules/login/login_module.dart';
 
@@ -24,7 +27,8 @@ class AppModule extends MainModule {
   List<Bind> get binds => [
         // Administra a conexão com o banco
         Bind((i) => ConnectionADM(), lazy: false),
-        
+        Bind((i) => ConnectionCheck(), lazy: false),
+
         Bind((i) => AuthStore()),
 
         // Repositories Geral da aplicacao
@@ -44,9 +48,11 @@ class AppModule extends MainModule {
         Router('/estabelecimento', module: EstabelecimentoModule()),
         Router('/agendamento', module: AgendamentoModule()),
         Router('/meus_agendamentos', module: MeusAgendamentosModule()),
-        Router('/meus_agendamentos_fornecedor', module: MeusAgendamentosFornecedorModule()),
+        Router('/meus_agendamentos_fornecedor',
+            module: MeusAgendamentosFornecedorModule()),
         Router('/chat_list', module: ChatListModule()),
         Router('/image_profile', module: ImageProfileModule()),
+        Router('/error', child: (context, args) => NoConnectionDialog(),),
       ];
 
   @override
