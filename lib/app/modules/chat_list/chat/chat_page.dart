@@ -18,6 +18,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends ModularState<ChatPage, ChatController> {
   //use 'controller' variable to access controller
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -34,7 +35,7 @@ class _ChatPageState extends ModularState<ChatPage, ChatController> {
           IconButton(
             tooltip: 'Finalizar Chat',
             icon: Icon(FontAwesome.sign_out),
-            onPressed: () {  },
+            onPressed: () {},
           )
         ],
       ),
@@ -44,10 +45,15 @@ class _ChatPageState extends ModularState<ChatPage, ChatController> {
             child: Observer(
               builder: (_) {
                 List<ChatFirebaseModel> data = controller.messages?.data;
+
+                if (data == null) return SizedBox.shrink();
                 
-                if(data == null) return SizedBox.shrink();
-                
+                Future.delayed(Duration.zero, () {
+                  _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+                });
+
                 return ListView.builder(
+                  controller: _scrollController,
                   shrinkWrap: true,
                   itemCount: data.length,
                   itemBuilder: (_, index) {

@@ -14,26 +14,20 @@ class ChatRepository {
   }
 
   Stream<List<ChatFirebaseModel>> getMessages(ChatModel chat) {
-    return _firestore
-      .collection('chat')
-      .document(chat.id.toString())
+    return _firestore.collection('chat').document(chat.id.toString())
       .collection('messages')
-      .orderBy('data_mensagem', descending: false)
-      .snapshots()
-        .map((query) => query.documents.map((m) => ChatFirebaseModel.fromDoc(m))
-        .toList());
+      .orderBy('data_mensagem', descending: false).snapshots().map((query) => query.documents.map((m) => ChatFirebaseModel.fromDoc(m)).toList());
   }
 
-  void sendMessage(int chat, String mensagem, {int usuario, int fornecedor}) {
-    var data = <String, dynamic>{'mensagem': mensagem, 'data_mensagem': DateTime.now()};
-
-    if (usuario != null) {
-      data['usuario'] = usuario;
-    } else {
-      data['fornecedor'] = fornecedor;
-    }
+  Future<void> sendMessage(int chat, String mensagem, int usuario) async {
+    var data = <String, dynamic>{'mensagem': mensagem, 'data_mensagem': DateTime.now(), 'usuario': usuario};
 
     _firestore.collection('chat').document(chat.toString()).collection('messages').add(data);
+    await CustomDio.authInstance.post('/chats/notificar', data: {
+      'chat': chat,
+      'mensagem': mensagem,
+      'para': 'F',
+    });
   }
 
   Future<List<ChatModel>> closeChat(ChatModel chat) {

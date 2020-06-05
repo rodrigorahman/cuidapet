@@ -30,7 +30,8 @@ abstract class _ChatControllerBase with Store {
   }
 
   void sendMessage() {
-    _repository.sendMessage(chat.id, messageController.text, usuario: chat.usuario); 
+    _repository.sendMessage(chat.id, messageController.text, chat.usuario); 
+    messageController.text = '';
   }
 
   Future<void> closeChat() async {
